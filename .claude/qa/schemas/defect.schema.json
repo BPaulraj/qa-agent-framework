@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "defect.schema.json",
+  "title": "Defect draft (maps to an ADO Bug)",
+  "type": "object",
+  "required": [
+    "title",
+    "severity",
+    "priority",
+    "environment",
+    "steps",
+    "expected",
+    "actual"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "[Module] Symptom when condition",
+      "minLength": 10
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "1 - Critical",
+        "2 - High",
+        "3 - Medium",
+        "4 - Low"
+      ]
+    },
+    "priority": {
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "module": {
+      "type": "string"
+    },
+    "environment": {
+      "type": "string"
+    },
+    "build": {
+      "type": "string"
+    },
+    "browser": {
+      "type": "string"
+    },
+    "preconditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "expected": {
+      "type": "string"
+    },
+    "actual": {
+      "type": "string"
+    },
+    "frequency": {
+      "type": "string",
+      "enum": [
+        "always",
+        "intermittent",
+        "once"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Paths relative to the run folder (e.g. evidence/TC-CHK-001-step3.png), or repo-relative/absolute"
+    },
+    "caseId": {
+      "type": "string"
+    },
+    "runId": {
+      "type": "string"
+    },
+    "adoTestCaseId": {
+      "type": "integer"
+    },
+    "requirementAdoId": {
+      "type": "integer"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "adoBugId": {
+      "type": "integer",
+      "description": "Set by ado.mjs create-bug after filing"
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "./.claude/qa/schemas/qa.config.schema.json",
+  "version": 1,
+  "project": {
+    "name": "shop-web",
+    "description": "Customer storefront and orders API",
+    "team": "Checkout squad"
+  },
+  "appTypes": ["web", "api"],
+  "packs": ["pack-checkout"],
+  "environments": {
+    "dev": {
+      "webBaseUrl": "https://dev.shop.example.com",
+      "apiBaseUrl": "https://dev-api.shop.example.com/v1",
+      "allowWrite": true,
+      "auth": { "user": "QA_USER", "password": "QA_PASSWORD", "apiToken": "QA_API_TOKEN" }
+    },
+    "qa": {
+      "webBaseUrl": "https://qa.shop.example.com",
+      "apiBaseUrl": "https://qa-api.shop.example.com/v1",
+      "allowWrite": true,
+      "auth": { "user": "QA_USER", "password": "QA_PASSWORD", "apiToken": "QA_API_TOKEN" }
+    },
+    "uat": {
+      "webBaseUrl": "https://uat.shop.example.com",
+      "allowWrite": false,
+      "notes": "Shared with business users. Read-only checks only."
+    },
+    "prod": {
+      "webBaseUrl": "https://www.shop.example.com",
+      "apiBaseUrl": "https://api.shop.example.com/v1",
+      "blocked": true
+    }
+  },
+  "defaultEnvironment": "qa",
+  "automation": {
+    "web": {
+      "framework": "playwright",
+      "language": "typescript",
+      "testDir": "tests/e2e",
+      "runCommand": "npx playwright test --grep \"{grep}\" --reporter=json",
+      "conventions": "Page objects in tests/e2e/pages; auth via storageState fixture in tests/e2e/fixtures.ts"
+    },
+    "api": {
+      "framework": "playwright-request",
+      "language": "typescript",
+      "testDir": "tests/api",
+      "runCommand": "npx playwright test tests/api --grep \"{grep}\" --reporter=json"
+    },
+    "apiSpecs": ["docs/openapi.yaml"]
+  },
+  "execution": { "mode": "both", "headless": true },
+  "paths": { "cases": ".qa/cases", "runs": ".qa/runs", "plans": ".qa/plans" },
+  "ado": {
+    "organization": "https://dev.azure.com/contoso",
+    "project": "Shop",
+    "areaPath": "Shop\\Checkout",
+    "iterationPath": "Shop\\Sprint 42",
+    "testPlanId": null,
+    "testSuiteId": null,
+    "patEnvVar": "AZURE_DEVOPS_EXT_PAT",
+    "bugDefaults": { "tags": ["found-by-qa-agent"] }
+  },
+  "guardrails": {
+    "blockedHosts": ["*.prod.example.com", "payments.thirdparty.com"]
+  },
+  "regression": {
+    "baseBranch": "main",
+    "alwaysInclude": { "tags": ["smoke"], "priorities": ["P1"] }
+  }
+}

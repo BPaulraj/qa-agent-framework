@@ -1,0 +1,23 @@
+{
+  "$comment": "Maps code paths to modules for impact-based regression. paths: repo-relative globs (** any depth, * one segment). dependsOn: modules this one calls; a change there also impacts this module. journeys: keys from journeys.md.",
+  "modules": {
+    "checkout": {
+      "description": "Cart, checkout UI and orders API",
+      "paths": ["src/checkout/**", "src/cart/**", "services/orders-api/**", "tests/e2e/checkout/**"],
+      "dependsOn": ["payments", "catalog"],
+      "journeys": ["guest-checkout"]
+    },
+    "payments": {
+      "description": "Payment integration",
+      "paths": ["services/payments-api/**", "src/payments/**"],
+      "dependsOn": [],
+      "journeys": ["guest-checkout"]
+    },
+    "catalog": {
+      "description": "Products, search and stock",
+      "paths": ["src/catalog/**", "services/catalog-api/**"],
+      "dependsOn": [],
+      "journeys": []
+    }
+  }
+}

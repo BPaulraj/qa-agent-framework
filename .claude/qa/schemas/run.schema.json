@@ -1,0 +1,209 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "run.schema.json",
+  "title": "Test run result",
+  "type": "object",
+  "required": [
+    "runId",
+    "environment",
+    "startedAt",
+    "results"
+  ],
+  "properties": {
+    "runId": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "trigger": {
+      "type": "string",
+      "enum": [
+        "manual",
+        "regression",
+        "pr",
+        "ci"
+      ]
+    },
+    "environment": {
+      "type": "string"
+    },
+    "build": {
+      "type": "string",
+      "description": "App version / build / commit under test"
+    },
+    "startedAt": {
+      "type": "string"
+    },
+    "finishedAt": {
+      "type": "string"
+    },
+    "selection": {
+      "type": "object",
+      "description": "Why these cases were chosen (for regression: changed files, modules, rationale)."
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "caseId",
+          "status",
+          "mode"
+        ],
+        "properties": {
+          "caseId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "passed",
+              "failed",
+              "blocked",
+              "skipped"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "exploratory",
+              "scripted"
+            ]
+          },
+          "durationMs": {
+            "type": "integer"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Paths relative to the run folder"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "failure": {
+            "type": "object",
+            "properties": {
+              "step": {
+                "type": "integer"
+              },
+              "expected": {
+                "type": "string"
+              },
+              "actual": {
+                "type": "string"
+              },
+              "classification": {
+                "type": "string",
+                "enum": [
+                  "product-bug",
+                  "test-bug",
+                  "environment",
+                  "test-data",
+                  "flaky",
+                  "requirement-gap",
+                  "untriaged"
+                ]
+              },
+              "confidence": {
+                "type": "string",
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ]
+              },
+              "reasoning": {
+                "type": "string"
+              },
+              "cluster": {
+                "type": "integer",
+                "description": "Id of the failure cluster in run.clusters"
+              }
+            }
+          },
+          "defect": {
+            "type": "string",
+            "description": "Defect draft (defects/<id>.json) or ADO bug id"
+          }
+        }
+      }
+    },
+    "ado": {
+      "type": "object",
+      "properties": {
+        "runId": {
+          "type": "integer"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "clusters": {
+      "type": "array",
+      "description": "Failures grouped by root-cause signature (parse-results.mjs). Triage per cluster.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "exception": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer"
+          },
+          "modules": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "product-bug",
+              "test-bug",
+              "environment",
+              "test-data",
+              "flaky",
+              "requirement-gap",
+              "untriaged"
+            ]
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "reasoning": {
+            "type": "string"
+          },
+          "defect": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

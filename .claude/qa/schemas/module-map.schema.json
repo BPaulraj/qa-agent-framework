@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "module-map.schema.json",
+  "title": "Module / component map",
+  "type": "object",
+  "required": [
+    "modules"
+  ],
+  "properties": {
+    "$comment": {
+      "type": "string"
+    },
+    "$schema": {
+      "type": "string"
+    },
+    "generatedBy": {
+      "type": "string"
+    },
+    "sharedPaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Globs of shared framework code; changes suggest a broad regression."
+    },
+    "modules": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "App code globs in THIS repo (app-and-tests repos)."
+          },
+          "testPaths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Test code globs in THIS repo (generated)."
+          },
+          "testCount": {
+            "type": "integer"
+          },
+          "lockTestPaths": {
+            "type": "boolean"
+          },
+          "areaPaths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "ADO area path globs, e.g. Shop\\\\Orders*"
+          },
+          "adoTags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "appRepos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "repo"
+              ],
+              "properties": {
+                "repo": {
+                  "type": "string"
+                },
+                "paths": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "dependsOn": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "journeys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pack": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "owner": {
+            "type": "string"
+          },
+          "stale": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "extraSharedPaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Hand-maintained shared globs (preserved on regeneration)."
+    }
+  }
+}

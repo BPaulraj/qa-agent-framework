@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=../../../.claude/qa/schemas/testcase.schema.json
+# Canonical test case. One case per file: .qa/cases/<module>/<id>.yaml
+# (The $schema path above is correct for files in .qa/cases/<module>/ and drives editor IntelliSense.)
+id: TC-CHK-001
+title: Guest can check out with a valid card and receives an order confirmation
+type: functional            # functional | integration | regression | smoke | e2e
+appType: web                # web | api
+module: checkout            # key from the pack's module-map.json
+journey: guest-checkout     # key from the pack's journeys.md
+priority: P1                # P1 (critical) .. P4
+tags: [smoke, happy-path]
+techniques: [use-case]
+requirement:
+  adoId: 1234               # ADO User Story / PBI; creates a "Tests" link on push
+preconditions:
+  - Product "{{data.sku}}" has stock >= {{data.qty}}
+  - User is not logged in
+data:
+  sku: QA-TSHIRT-M
+  qty: 2
+  card: "4111 1111 1111 1111"   # sandbox test card from pack test-data.md
+  email: qa-auto-{{runId}}@example.com
+steps:
+  - action: Open the product page for {{data.sku}} and add {{data.qty}} to the cart
+    expected: Cart badge shows {{data.qty}}
+  - action: Go to checkout as guest and enter {{data.email}} and a valid UK address
+    expected: Delivery options are displayed with prices
+  - action: Pay with card {{data.card}}
+    expected: Confirmation page shows an order number matching ^ORD-\d{8}$ and the total paid
+  - action: Call GET /orders/{orderNumber} with the QA API token
+    expected: 200, status "CONFIRMED", lines match the cart, email = {{data.email}}
+cleanup:
+  - Cancel the order via POST /orders/{orderNumber}/cancel (qa/dev only)
+automation:
+  status: candidate         # manual | candidate | automated | not-automatable
+  script: ""                # e.g. tests/e2e/checkout.spec.ts:TC-CHK-001
+openQuestions: []

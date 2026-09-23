@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node .claude/qa/scripts/detect-stack.mjs:*)",
+      "Bash(node .claude/qa/scripts/select-regression.mjs:*)",
+      "Bash(node .claude/qa/scripts/validate.mjs:*)",
+      "Bash(node .claude/qa/scripts/new-run.mjs:*)",
+      "Bash(node .claude/qa/scripts/ado.mjs check:*)",
+      "Bash(node .claude/qa/scripts/ado.mjs get-item:*)",
+      "Bash(node .claude/qa/scripts/ado.mjs list-plans:*)",
+      "Bash(node .claude/qa/scripts/ado.mjs list-suites:*)",
+      "Bash(node .claude/qa/scripts/ado.mjs find-bugs:*)",
+      "Bash(node .claude/qa/scripts/index-tests.mjs:*)",
+      "Bash(node .claude/qa/scripts/make-suite.mjs:*)",
+      "Bash(node .claude/qa/scripts/parse-results.mjs:*)",
+      "Bash(node .claude/qa/scripts/build-module-map.mjs:*)",
+      "Bash(node .claude/qa/scripts/ado.mjs changed-items:*)",
+      "Bash(node .claude/qa/scripts/ado.mjs pr-files:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell|WebFetch|Write|Edit|mcp__playwright__browser_navigate",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/qa/scripts/guard.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

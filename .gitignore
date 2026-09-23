@@ -1,0 +1,8 @@
+node_modules/
+.qa/runs/
+.qa/mcp-output/
+.qa/catalog.json
+.qa/selections/
+.qa/suites/
+# personal Claude Code settings
+.claude/settings.local.json
